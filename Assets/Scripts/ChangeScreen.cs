@@ -1,10 +1,12 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using UnityEngine.UI;
 using UnityEngine;
 
 public class ChangeScreen : MonoBehaviour {
     public const int NumTextures = 9;
     public const int NumItems = 6;
+    public Text uiText;
 
     // For better readability
     public const int Correct = 6;
@@ -74,6 +76,7 @@ public class ChangeScreen : MonoBehaviour {
                 return;
         gameOver = true;
         render.materials[1].mainTexture = textureArray[Congratulations];
+        uiText.text = "You did it!";
     }
 
     /** SetTask
@@ -88,7 +91,15 @@ public class ChangeScreen : MonoBehaviour {
                 // excludes the correct, incorrect, and congratulations textures
                 currentTask = (int)Random.Range(0, NumItems);
             } while (retrievedItems[currentTask]);
+
+            // determines the quantity of items the player needs to retrieve
+            // only for show at the moment
+            int itemQuantity = (int)Random.Range(1, 6); 
+
             render.materials[1].mainTexture = textureArray[currentTask];
+            uiText.text = "Find " + itemQuantity + " " + textureNames[currentTask];
+            if (itemQuantity != 1)
+                uiText.text += "s"; // for plurals
         }
     }
 
