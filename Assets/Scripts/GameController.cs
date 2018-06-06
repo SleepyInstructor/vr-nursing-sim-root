@@ -10,9 +10,9 @@ public class GameController : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
         if (interactibles != null) {
-            // Add Rigidbody and Throwable to all interactible items
+            // Add Throwable (and Rigidbody) to all interactible items
             for (int i = 0; i < interactibles.Length; i++){
-                interactibles[i].AddComponent<Rigidbody>();
+                //interactibles[i].AddComponent<Rigidbody>();
                 interactibles[i].AddComponent<Valve.VR.InteractionSystem.Throwable>();
             }
         }
