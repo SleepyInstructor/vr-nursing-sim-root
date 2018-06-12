@@ -14,12 +14,11 @@ public class PutOnGloves : MonoBehaviour {
 
     /** OnTriggerEnter
      *  Changes the material of the hands to latex when coming into 
-     *  contact with the box of gloves, signifying puttign on and wearing gloves
+     *  contact with the box of gloves, signifying putting on and wearing gloves
      **/
     private void OnTriggerEnter(Collider other) {
-        if(other.tag == "gloves" && render.materials[1].mainTexture != latex)
+        if (other.tag == "gloves" && render.materials[1].mainTexture != latex)
             render.materials[1].mainTexture = latex;
         // else back to hands? 
     }
-
 }

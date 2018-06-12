@@ -267,7 +267,7 @@ namespace Valve.VR.InteractionSystem
 			}
 
             HandDebugLog( "AttachObject " + objectToAttach );
-			objectToAttach.SendMessage( "OnAttachedToHand", this, SendMessageOptions.DontRequireReceiver );
+            objectToAttach.SendMessage( "OnAttachedToHand", this, SendMessageOptions.DontRequireReceiver );
 
             UpdateHovering();
         }
@@ -685,7 +685,7 @@ namespace Valve.VR.InteractionSystem
 
 			if ( hoveringInteractable )
 			{
-				hoveringInteractable.SendMessage( "HandHoverUpdate", this, SendMessageOptions.DontRequireReceiver );
+                hoveringInteractable.SendMessage( "HandHoverUpdate", this, SendMessageOptions.DontRequireReceiver );
 			}
 		}
 

@@ -104,16 +104,21 @@ namespace Valve.VR.InteractionSystem
 			if ( hand.GetStandardInteractionButtonDown() )
 			{
 				hand.AttachObject( gameObject, attachmentFlags, attachmentPoint );
-				ControllerButtonHints.HideButtonHint( hand, Valve.VR.EVRButtonId.k_EButton_SteamVR_Trigger );
+                ControllerButtonHints.HideButtonHint( hand, Valve.VR.EVRButtonId.k_EButton_SteamVR_Trigger );
 			}
 		}
 
 		//-------------------------------------------------
 		private void OnAttachedToHand( Hand hand )
 		{
+
 			attached = true;
 
-			onPickUp.Invoke();
+            try {
+                onPickUp.Invoke();
+            } catch (System.Exception e) {
+                //Debug.Log(e.ToString());
+            }
 
 			hand.HoverLock( null );
 
@@ -158,7 +163,11 @@ namespace Valve.VR.InteractionSystem
 		{
 			attached = false;
 
-			onDetachFromHand.Invoke();
+            try{
+                onDetachFromHand.Invoke();
+            }catch (System.Exception e){
+                //Debug.Log(e.ToString());
+            }
 
 			hand.HoverUnlock( null );
 

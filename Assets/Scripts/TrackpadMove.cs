@@ -18,7 +18,7 @@ public class TrackpadMove : MonoBehaviour
     private void Start()
     {
         controller = gameObject.GetComponent<SteamVR_TrackedObject>();
-    }
+}
 
     // Update is called once per frame
     private void Update()
