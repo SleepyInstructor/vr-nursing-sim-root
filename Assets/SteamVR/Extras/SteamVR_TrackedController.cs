@@ -37,7 +37,7 @@ public class SteamVR_TrackedController : MonoBehaviour
 	// Use this for initialization
 	protected virtual void Start()
 	{
-		if (this.GetComponent<SteamVR_TrackedObject>() == null)
+        if (this.GetComponent<SteamVR_TrackedObject>() == null)
 		{
 			gameObject.AddComponent<SteamVR_TrackedObject>();
 		}
@@ -49,7 +49,7 @@ public class SteamVR_TrackedController : MonoBehaviour
 			{
 				this.GetComponent<SteamVR_RenderModel>().index = (SteamVR_TrackedObject.EIndex)controllerIndex;
 			}
-		}
+        }
 		else
 		{
 			controllerIndex = (uint)this.GetComponent<SteamVR_TrackedObject>().index;

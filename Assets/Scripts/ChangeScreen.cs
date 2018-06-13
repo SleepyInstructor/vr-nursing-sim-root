@@ -77,8 +77,6 @@ public class ChangeScreen : MonoBehaviour {
     **/
     public void IsTaskComplete(string id) {
         if(!gameOver && id == textureNames[currentTask]){
-            // Show result screen for 5 seconds
-            //DisplayAndWait(5, true);
 
             itemsBrought++;
             // reset timer and tracker
@@ -90,8 +88,6 @@ public class ChangeScreen : MonoBehaviour {
                 DisplayInstructions();
             }
         }
-        // Show result screen for 5 seconds
-        //DisplayAndWait(5, false);
     }
 
     /** IsGameComplete
@@ -161,22 +157,6 @@ public class ChangeScreen : MonoBehaviour {
             countdown.text = "0min 0sec";
             gameOver = true;
             IsGameComplete();
-        }
-    }
-
-    /** DisplayAndWait
-    * A method to wait for a certain number of seconds
-    * Doesn't work yet
-    **/
-    private IEnumerator DisplayAndWait(int seconds, bool isCorrect) {
-        if (isCorrect) {
-            render.materials[1].mainTexture = textureArray[Correct];
-        } else {
-            render.materials[1].mainTexture = textureArray[Incorrect];
-        }
-        yield return new WaitForSecondsRealtime(seconds);
-        if (!isCorrect){
-            render.materials[1].mainTexture = textureArray[currentTask];
         }
     }
 }

@@ -15,14 +15,12 @@ public class TrackpadMove : MonoBehaviour
     private SteamVR_TrackedObject controller;
     private SteamVR_Controller.Device device;
 
-    private void Start()
-    {
+    private void Start() {
         controller = gameObject.GetComponent<SteamVR_TrackedObject>();
-}
+    }
 
     // Update is called once per frame
-    private void Update()
-    {
+    private void Update() {
         device = SteamVR_Controller.Input((int)controller.index);
         LookAndMove(device);
     }

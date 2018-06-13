@@ -466,6 +466,7 @@ namespace Valve.VR.InteractionSystem
 		//-------------------------------------------------
 		private void UpdateHovering()
 		{
+
 			if ( ( noSteamVRFallbackCamera == null ) && ( controller == null ) )
 			{
 				return;
@@ -482,7 +483,7 @@ namespace Valve.VR.InteractionSystem
 
 			// Pick the closest hovering
 			float flHoverRadiusScale = playerInstance.transform.lossyScale.x;
-			float flScaledSphereRadius = hoverSphereRadius * flHoverRadiusScale;
+            float flScaledSphereRadius = hoverSphereRadius * flHoverRadiusScale;
 
 			// if we're close to the floor, increase the radius to make things easier to pick up
 			float handDiff = Mathf.Abs( transform.position.y - playerInstance.trackingOriginTransform.position.y );

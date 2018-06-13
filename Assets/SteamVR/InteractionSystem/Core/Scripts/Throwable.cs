@@ -46,6 +46,10 @@ namespace Valve.VR.InteractionSystem
 
 		public bool snapAttachEaseInCompleted = false;
 
+        // Method to see if an item is attached to the player's hand
+        public bool isAttached() {
+            return attached;
+        }
 
 		//-------------------------------------------------
 		void Awake()
