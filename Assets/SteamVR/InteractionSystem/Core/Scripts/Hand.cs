@@ -91,6 +91,11 @@ namespace Valve.VR.InteractionSystem
 
 		SteamVR_Events.Action inputFocusAction;
 
+        // A method to change the texture of the controller model
+        public void ChangeModelTexture(Texture newTexture) {
+            Renderer render = controllerObject.GetComponentsInChildren<SkinnedMeshRenderer>()[0];
+            render.material.SetTexture("_MainTex", newTexture);
+        }
 
 		//-------------------------------------------------
 		// The Interactable object this Hand is currently hovering over
