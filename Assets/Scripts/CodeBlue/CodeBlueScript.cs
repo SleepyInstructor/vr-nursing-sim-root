@@ -15,15 +15,20 @@ public class CodeBlueScript : MonoBehaviour {
     public const int StartAssessment = 4;
     public const int EndAssessment = 6;
 
+    public Canvas canvas;
+    public GameObject patient;
     public Text dialogueDisplay;
 
     // the entire script of dialogue
     private string[] patientScript;
     // total number of lines in script
     private int totalLines;
+    // for playing certain animations of the patient
+    private Animator animator;
 
 	// Use this for initialization
 	void Start () {
+        animator = patient.GetComponent<Animator>();
         // read dialogue from a file, if it exists
         if (System.IO.File.Exists(ScriptLocation))
             patientScript = System.IO.File.ReadAllLines(ScriptLocation);
@@ -33,12 +38,18 @@ public class CodeBlueScript : MonoBehaviour {
         // set starting values
         totalLines = patientScript.Length;
 
-        //Introduction();
+        Introduction();
 	}
-	
-	// Update is called once per frame
-	void Update () {
-		
+
+    /**
+     * With help from 
+     * https://forum.unity.com/threads/please-help-me-with-script-making-ui-canvas-look-towards-camera.336270/
+     **/
+    void Update () {
+        // face the canvas towards the player
+        Camera camera = Camera.main;
+        canvas.transform.LookAt(camera.transform.position + Vector3.forward);
+        canvas.transform.Rotate(0, 180, 0);
 	}
 
     /** Introduction
@@ -52,6 +63,8 @@ public class CodeBlueScript : MonoBehaviour {
     private void Introduction() {
         dialogueDisplay.text = patientScript[StartIntro-1];
         Dialogue(5, StartIntro, EndIntro);
+
+        //animator.Play("nameOfAnimation");
     }
 
     /** Assessment 
