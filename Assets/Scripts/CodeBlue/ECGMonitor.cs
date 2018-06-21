@@ -20,7 +20,7 @@ public class ECGMonitor : MonoBehaviour {
         normalReading = Resources.Load("ECG Monitor Loop") as VideoClip;
         cardiacArrest = Resources.Load("CardiacArrest") as VideoClip;
 
-        player.clip = normalReading;
+        player.clip = cardiacArrest;
     }
 	
 	// Plays the cardiac arrest clip on the monitor

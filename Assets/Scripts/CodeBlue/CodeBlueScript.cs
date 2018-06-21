@@ -3,6 +3,11 @@ using System.Collections.Generic;
 using UnityEngine.UI;
 using UnityEngine;
 
+
+// For next time
+// https://answers.unity.com/questions/160848/how-do-i-run-two-animations-at-once-on-the-same-ga.html
+
+
 public class CodeBlueScript : MonoBehaviour {
     // where the dialogue script will be read from
     // only appears to work with hardlinks? 
