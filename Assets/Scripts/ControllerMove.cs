@@ -45,19 +45,22 @@ namespace Valve.VR.InteractionSystem
         private void LookAndMove(SteamVR_Controller.Device device)
         {
             // if user is touching touchpad
-            if (device.GetTouch(SteamVR_Controller.ButtonMask.Touchpad))
+            if (device.GetPress(SteamVR_Controller.ButtonMask.Grip))
             {
-                // read touchpad values
-                Vector2 touchpad = device.GetAxis(Valve.VR.EVRButtonId.k_EButton_SteamVR_Touchpad);
-                float ymov = Math.Sign(touchpad.y) * calculateSpeedScale(Math.Abs(touchpad.y), 0.25f, 0.75f, 2f);
-                float xmov = Math.Sign(touchpad.x) * calculateSpeedScale(Math.Abs(touchpad.x), 0.25f, 0.75f, 2f);
-
-                if (xmov != 0f || ymov != 0f)
+                if (device.GetTouch(SteamVR_Controller.ButtonMask.Touchpad))
                 {
-                    player.transform.position += Camera.main.transform.forward * ymov * Time.deltaTime;
-                    player.transform.position += Camera.main.transform.right * xmov * Time.deltaTime;
-                    player.transform.position = ChangeY(player.transform.position, 0.1f);
+                    // read touchpad values
+                    Vector2 touchpad = device.GetAxis(Valve.VR.EVRButtonId.k_EButton_SteamVR_Touchpad);
+                    float ymov = Math.Sign(touchpad.y) * calculateSpeedScale(Math.Abs(touchpad.y), 0.25f, 0.75f, 2f);
+                    float xmov = Math.Sign(touchpad.x) * calculateSpeedScale(Math.Abs(touchpad.x), 0.25f, 0.75f, 2f);
 
+                    if (xmov != 0f || ymov != 0f)
+                    {
+                        player.transform.position += Camera.main.transform.forward * ymov * Time.deltaTime;
+                        player.transform.position += Camera.main.transform.right * xmov * Time.deltaTime;
+                        player.transform.position = ChangeY(player.transform.position, 0.1f);
+
+                    }
                 }
             }
         }
