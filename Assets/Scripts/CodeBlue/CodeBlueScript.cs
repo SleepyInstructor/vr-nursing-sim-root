@@ -17,13 +17,32 @@ public class CodeBlueScript : MonoBehaviour {
     public const int StartIntro = 1;
     public const int EndIntro = 3;
 
-    public const int StartAssessment = 4;
-    public const int EndAssessment = 6;
+    // If nurse introduces themselves multiple times
+    public const int MultiIntro = 4;
 
-    public Canvas canvas;
+    // Check ID band
+    public const int CheckID = 6;
+
+    // If nurse checks ID band multiple times
+    public const int MultiID = 8;
+
+    // If nurse checks ID band without introduction
+    public const int IDNoIntro = 10;
+
+    // Assess pain
+    public const int AssessPain = 12;
+
+    // If nurse assesses pain multiple times
+    public const int MultiAssess = 14;
+
+    // If nurse triggers code blue too early
+    public const int EarlyBlue = 16;
+
     public GameObject patient;
     public Text dialogueDisplay;
 
+    // checklist of performed actions
+    private bool[] completed;
     // the entire script of dialogue
     private string[] patientScript;
     // total number of lines in script
@@ -42,8 +61,13 @@ public class CodeBlueScript : MonoBehaviour {
 
         // set starting values
         totalLines = patientScript.Length;
-
-        Introduction();
+        /** Meanings
+        *   1) has introduced
+        *   2) has checked ID 
+        *   3) has assessed pain
+        *   4) has triggered code blue **/
+        completed = new bool[] { false, false, false, false };
+        dialogueDisplay.text = "";
 	}
 
     /**
@@ -53,34 +77,82 @@ public class CodeBlueScript : MonoBehaviour {
     void Update () {
         // face the canvas towards the player
         Camera camera = Camera.main;
-        canvas.transform.LookAt(camera.transform.position + Vector3.forward);
-        canvas.transform.Rotate(0, 180, 0);
+        this.transform.LookAt(camera.transform.position + Vector3.forward);
+        this.transform.Rotate(0, 180, 0);
 	}
 
-    /** Introduction
-     *  The first part of the simulation. 
-     *  The patient: 
-     *      - rings call bell
-     *      - is writhing in bed
-     *      - is holding left shoulder
-     *      - is complaining or pain and nausea
+    /** Introduction 
+     *  After coming to the patient's room. 
+     *  The nurse must: 
+     *      - introduce themselves
      **/
-    private void Introduction() {
-        dialogueDisplay.text = patientScript[StartIntro-1];
-        Dialogue(5, StartIntro, EndIntro);
+    public void Introduction() {
+        // introduce self first time
+        if (!completed[0]) {
+            Dialogue(4, StartIntro, EndIntro);
+            completed[0] = true;
+        // if nurse has already introduced themselves
+        } else {
+            Dialogue(4, MultiIntro);
+        }
+    }
 
-        //animator.Play("nameOfAnimation");
+    /** CheckBand 
+     *  After coming to the patient's room. 
+     *  The nurse must: 
+     *      - check patient's ID band
+     **/
+    public void CheckBand() {
+        // if nurse has not introduced themselves
+        // will still show ID
+        if (!completed[0]) {
+            Dialogue(4, IDNoIntro);
+        // check ID first time
+        } else if (!completed[1]) {
+            Dialogue(4, CheckID);
+            completed[1] = true;
+            // if nurse has already checked band
+        } else {
+            Dialogue(4, MultiID);
+        }
     }
 
     /** Assessment 
      *  After coming to the patient's room. 
      *  The nurse must: 
-     *      - introduce themselves
-     *      - check patient's ID band
      *      - perform a series of assessments (?)
      **/
-    private void Assessment() {
-        Dialogue(5, StartAssessment, EndAssessment);
+    public void Assessment() {
+        // if nurse has not introduced themselves first
+        if (!completed[0]) {
+            Dialogue(4, IDNoIntro);
+        } else if (!completed[2]) {
+            Dialogue(4, AssessPain);
+            completed[2] = true;
+        } else {
+            Dialogue(4, MultiAssess);
+        }
+    }
+
+    /** CodeBlue
+     *  When the nurse triggers a code blue. 
+     *  Can be triggered too early and scare the patient, 
+     *  triggering their heart attack. 
+     **/
+    public void CodeBlue() {
+        Dialogue(3, EarlyBlue);
+    }
+
+    /** Wait
+    *  Starts the coroutine "PaceDialogue"; used for single lines
+    *  Accepts 2 parameters: 
+    *  seconds - the number of seconds to wait between each line of dialogue
+    *  start - the index of the first line of dialogue taken from patientScript
+    **/
+    private void Dialogue(int seconds, int start) {
+        IEnumerator display;
+        display = PaceDialogue(seconds, start, start+1);
+        StartCoroutine(display);
     }
 
     /** Wait
@@ -91,7 +163,9 @@ public class CodeBlueScript : MonoBehaviour {
      *  end - the index of the final line of dialogue taken from patientScript
      **/
     private void Dialogue(int seconds, int start, int end) {
-        StartCoroutine(PaceDialogue(seconds, start, end));
+        IEnumerator display;
+        display = PaceDialogue(seconds, start, end);
+        StartCoroutine(display);
     }
 
     /** PaceDialogue
@@ -101,9 +175,10 @@ public class CodeBlueScript : MonoBehaviour {
     private IEnumerator PaceDialogue(int seconds, int start, int end) {
         int subLine = start;
         while (subLine < end) {
-            yield return new WaitForSecondsRealtime(seconds);
-            dialogueDisplay.text = patientScript[subLine];
+            dialogueDisplay.text = patientScript[subLine-1];
             subLine++;
+            yield return new WaitForSecondsRealtime(seconds);
+            dialogueDisplay.text = "";
         }
     }
 }
