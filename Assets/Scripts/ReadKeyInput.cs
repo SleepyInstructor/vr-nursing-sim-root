@@ -9,7 +9,8 @@ public class ReadKeyInput : MonoBehaviour
 
     public Canvas otherCanvas;
     public Text instructionDisplay;
-    public RawImage image;
+    public GameObject wrist; // the plane over the client's wrist
+    public RawImage image; // where the wristband is displayed
 
     private CodeBlueScript script;
     private bool displayVisible;
@@ -18,6 +19,7 @@ public class ReadKeyInput : MonoBehaviour
     void Start() {
         script = otherCanvas.GetComponent<CodeBlueScript>();
         instructionDisplay.text = Instructions;
+        wrist.SetActive(false);
         displayVisible = true;
     }
 
@@ -36,33 +38,44 @@ public class ReadKeyInput : MonoBehaviour
         else if (Input.GetKeyDown(KeyCode.I)) {
             script.Introduction();
             // make UI Image transparent
-            if (image.color.a != 0f) {
-                Color temp = image.color;
-                temp.a = 0f;
-                image.color = temp;
-            }
+            if (wrist.activeSelf)
+                ToggleImage(false);
         }
         // Check patient ID
         else if (Input.GetKeyDown(KeyCode.C)){
             script.CheckBand();
-            Color temp = image.color;
-            temp.a = 1f;
-            image.color = temp;
+            ToggleImage(true);
         }
         // Perform pain assessment
         else if (Input.GetKeyDown(KeyCode.A)) {
             script.Assessment();
             // make UI Image transparent
-            if (image.color.a != 0f) {
-                Color temp = image.color;
-                temp.a = 0f;
-                image.color = temp;
-            }
+            if (wrist.activeSelf)
+                ToggleImage(false);
         }
         // Trigger a code blue
         // Only scares patient at the moment
         else if (Input.GetKeyDown(KeyCode.B)) {
             script.CodeBlue();
+            if (wrist.activeSelf)
+                ToggleImage(false);
         }
+    }
+
+    /** ToggleImage
+     *  Toggles the view of the client's wristband 
+     *  on and off (in both UI and on plane)
+     **/
+    private void ToggleImage(bool turnOn) {
+        Color temp = image.color;
+
+        // if the wristband is visible
+        if (turnOn)
+            temp.a = 1f;
+        else
+            temp.a = 0f;
+
+        image.color = temp;
+        wrist.SetActive(turnOn);
     }
 }

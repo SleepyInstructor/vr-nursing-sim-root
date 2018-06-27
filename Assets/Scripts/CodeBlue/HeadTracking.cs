@@ -5,6 +5,8 @@ using UnityEngine;
 public class HeadTracking : MonoBehaviour {
     public const double Tolerance = 0.5;
 
+    public GameObject pillow;
+
     private Camera player;
     private Animator animator;
     private string[] animBools = { "leftOfPatient", "rightOfPatient", "frontOfPatient" };
@@ -30,12 +32,22 @@ public class HeadTracking : MonoBehaviour {
      * Set the variable with the given name to true, and the rest to false
      **/
     private void ToggleAnim(string flipOn){
-
         for(int i=0; i<animBools.Length; i++) {
             if (animBools[i].Equals(flipOn))
                 animator.SetBool(animBools[i], true);
             else
                 animator.SetBool(animBools[i], false);
         }
+    }
+
+    /** EnableRagdoll
+     *  A method to be used by the animation that represents 
+     *  unconsciousness.
+     **/
+    private void EnableRagdoll(){
+        animator.enabled = false;
+        // Make pillow throwable after patient has gone unconscious
+        pillow.AddComponent<Valve.VR.InteractionSystem.Throwable>();
+        pillow.AddComponent<InContainer>();
     }
 }

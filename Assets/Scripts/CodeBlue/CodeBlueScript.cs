@@ -7,7 +7,6 @@ using UnityEngine;
 // For next time
 // https://answers.unity.com/questions/160848/how-do-i-run-two-animations-at-once-on-the-same-ga.html
 
-
 public class CodeBlueScript : MonoBehaviour {
     // where the dialogue script will be read from
     // only appears to work with hardlinks? 
@@ -116,7 +115,16 @@ public class CodeBlueScript : MonoBehaviour {
      **/
     public void CodeBlue() {
         Dialogue(3, IndexProtocol.EarlyBlue);
+        // patient goes into cardiac arrest out of fear? 
+        animator.SetBool("isUnconscious", true);
     }
+
+    /** Debrief
+     *  Gives a rundown on the performance of the player in a text file. 
+     **/
+     private void Debrief() {
+
+     }
 
     /** Wait
     *  Starts the coroutine "PaceDialogue"; used for single lines
