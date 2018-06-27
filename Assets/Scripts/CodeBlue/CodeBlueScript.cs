@@ -13,31 +13,6 @@ public class CodeBlueScript : MonoBehaviour {
     // only appears to work with hardlinks? 
     public const string ScriptLocation = "C:\\Users\\Erin\\Documents\\VRNursingSim\\Assets\\Scripts\\CodeBlue\\PatientScript.txt";
 
-    // Indexes of beginning and end of each grouping of dialogue
-    public const int StartIntro = 1;
-    public const int EndIntro = 3;
-
-    // If nurse introduces themselves multiple times
-    public const int MultiIntro = 4;
-
-    // Check ID band
-    public const int CheckID = 6;
-
-    // If nurse checks ID band multiple times
-    public const int MultiID = 8;
-
-    // If nurse checks ID band without introduction
-    public const int IDNoIntro = 10;
-
-    // Assess pain
-    public const int AssessPain = 12;
-
-    // If nurse assesses pain multiple times
-    public const int MultiAssess = 14;
-
-    // If nurse triggers code blue too early
-    public const int EarlyBlue = 16;
-
     public GameObject patient;
     public Text dialogueDisplay;
 
@@ -89,11 +64,11 @@ public class CodeBlueScript : MonoBehaviour {
     public void Introduction() {
         // introduce self first time
         if (!completed[0]) {
-            Dialogue(4, StartIntro, EndIntro);
+            Dialogue(4, IndexProtocol.StartIntro, IndexProtocol.EndIntro);
             completed[0] = true;
         // if nurse has already introduced themselves
         } else {
-            Dialogue(4, MultiIntro);
+            Dialogue(4, IndexProtocol.MultiIntro);
         }
     }
 
@@ -106,14 +81,14 @@ public class CodeBlueScript : MonoBehaviour {
         // if nurse has not introduced themselves
         // will still show ID
         if (!completed[0]) {
-            Dialogue(4, IDNoIntro);
+            Dialogue(4, IndexProtocol.IDNoIntro);
         // check ID first time
         } else if (!completed[1]) {
-            Dialogue(4, CheckID);
+            Dialogue(4, IndexProtocol.CheckID);
             completed[1] = true;
             // if nurse has already checked band
         } else {
-            Dialogue(4, MultiID);
+            Dialogue(4, IndexProtocol.MultiID);
         }
     }
 
@@ -125,12 +100,12 @@ public class CodeBlueScript : MonoBehaviour {
     public void Assessment() {
         // if nurse has not introduced themselves first
         if (!completed[0]) {
-            Dialogue(4, IDNoIntro);
+            Dialogue(4, IndexProtocol.IDNoIntro);
         } else if (!completed[2]) {
-            Dialogue(4, AssessPain);
+            Dialogue(4, IndexProtocol.AssessPain);
             completed[2] = true;
         } else {
-            Dialogue(4, MultiAssess);
+            Dialogue(4, IndexProtocol.MultiAssess);
         }
     }
 
@@ -140,7 +115,7 @@ public class CodeBlueScript : MonoBehaviour {
      *  triggering their heart attack. 
      **/
     public void CodeBlue() {
-        Dialogue(3, EarlyBlue);
+        Dialogue(3, IndexProtocol.EarlyBlue);
     }
 
     /** Wait
