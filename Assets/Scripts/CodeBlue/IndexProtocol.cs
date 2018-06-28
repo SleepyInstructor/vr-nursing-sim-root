@@ -35,4 +35,8 @@ public class IndexProtocol : MonoBehaviour
 
     // If nurse triggers code blue too early
     public const int EarlyBlue = 16;
+
+    // Person on the other side of intercom responds
+    public const int FirstContact = 18;
+    public const int SecondContact = 20;
 }

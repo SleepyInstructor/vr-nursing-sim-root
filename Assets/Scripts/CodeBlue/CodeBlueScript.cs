@@ -14,6 +14,7 @@ public class CodeBlueScript : MonoBehaviour {
 
     public GameObject patient;
     public Text dialogueDisplay;
+    public Text intercomDisplay;
 
     // checklist of performed actions
     private bool[] completed;
@@ -42,6 +43,7 @@ public class CodeBlueScript : MonoBehaviour {
         *   4) has triggered code blue **/
         completed = new bool[] { false, false, false, false };
         dialogueDisplay.text = "";
+        intercomDisplay.text = "";
 	}
 
     /**
@@ -63,11 +65,11 @@ public class CodeBlueScript : MonoBehaviour {
     public void Introduction() {
         // introduce self first time
         if (!completed[0]) {
-            Dialogue(4, IndexProtocol.StartIntro, IndexProtocol.EndIntro);
+            Dialogue(dialogueDisplay, 4, IndexProtocol.StartIntro, IndexProtocol.EndIntro);
             completed[0] = true;
         // if nurse has already introduced themselves
         } else {
-            Dialogue(4, IndexProtocol.MultiIntro);
+            Dialogue(dialogueDisplay, 4, IndexProtocol.MultiIntro);
         }
     }
 
@@ -80,14 +82,14 @@ public class CodeBlueScript : MonoBehaviour {
         // if nurse has not introduced themselves
         // will still show ID
         if (!completed[0]) {
-            Dialogue(4, IndexProtocol.IDNoIntro);
+            Dialogue(dialogueDisplay, 4, IndexProtocol.IDNoIntro);
         // check ID first time
         } else if (!completed[1]) {
-            Dialogue(4, IndexProtocol.CheckID);
+            Dialogue(dialogueDisplay, 4, IndexProtocol.CheckID);
             completed[1] = true;
             // if nurse has already checked band
         } else {
-            Dialogue(4, IndexProtocol.MultiID);
+            Dialogue(dialogueDisplay, 4, IndexProtocol.MultiID);
         }
     }
 
@@ -99,12 +101,12 @@ public class CodeBlueScript : MonoBehaviour {
     public void Assessment() {
         // if nurse has not introduced themselves first
         if (!completed[0]) {
-            Dialogue(4, IndexProtocol.IDNoIntro);
+            Dialogue(dialogueDisplay, 4, IndexProtocol.IDNoIntro);
         } else if (!completed[2]) {
-            Dialogue(4, IndexProtocol.AssessPain);
+            Dialogue(dialogueDisplay, 4, IndexProtocol.AssessPain);
             completed[2] = true;
         } else {
-            Dialogue(4, IndexProtocol.MultiAssess);
+            Dialogue(dialogueDisplay, 4, IndexProtocol.MultiAssess);
         }
     }
 
@@ -114,40 +116,45 @@ public class CodeBlueScript : MonoBehaviour {
      *  triggering their heart attack. 
      **/
     public void CodeBlue() {
-        Dialogue(3, IndexProtocol.EarlyBlue);
-        // patient goes into cardiac arrest out of fear? 
-        animator.SetBool("isUnconscious", true);
+        // If code blue is called before patient begins arrest
+        if (!animator.GetBool("isUnconscious")) { 
+            Dialogue(dialogueDisplay, 3, IndexProtocol.EarlyBlue);
+            animator.SetBool("isUnconscious", true);
+        }
+        Dialogue(intercomDisplay, 10, IndexProtocol.FirstContact, IndexProtocol.SecondContact);
     }
 
     /** Debrief
      *  Gives a rundown on the performance of the player in a text file. 
      **/
-     private void Debrief() {
+    private void Debrief() {
 
      }
 
     /** Wait
     *  Starts the coroutine "PaceDialogue"; used for single lines
-    *  Accepts 2 parameters: 
+    *  Accepts 3 parameters: 
+    *  outlet - where the text will be displayed
     *  seconds - the number of seconds to wait between each line of dialogue
     *  start - the index of the first line of dialogue taken from patientScript
     **/
-    private void Dialogue(int seconds, int start) {
+    private void Dialogue(Text outlet, int seconds, int start) {
         IEnumerator display;
-        display = PaceDialogue(seconds, start, start+1);
+        display = PaceDialogue(outlet, seconds, start, start+1);
         StartCoroutine(display);
     }
 
     /** Wait
      *  Starts the coroutine "PaceDialogue"
-     *  Accepts 3 parameters: 
+     *  Accepts 4 parameters: 
+     *  outlet - the location where text will be displayed
      *  seconds - the number of seconds to wait between each line of dialogue
      *  start - the index of the first line of dialogue taken from patientScript
      *  end - the index of the final line of dialogue taken from patientScript
      **/
-    private void Dialogue(int seconds, int start, int end) {
+    private void Dialogue(Text outlet, int seconds, int start, int end) {
         IEnumerator display;
-        display = PaceDialogue(seconds, start, end);
+        display = PaceDialogue(outlet, seconds, start, end);
         StartCoroutine(display);
     }
 
@@ -155,13 +162,13 @@ public class CodeBlueScript : MonoBehaviour {
     *   A method to wait for a certain number of seconds before displaying
     *   each line of the script
     **/
-    private IEnumerator PaceDialogue(int seconds, int start, int end) {
+    private IEnumerator PaceDialogue(Text outlet, int seconds, int start, int end) {
         int subLine = start;
         while (subLine < end) {
-            dialogueDisplay.text = patientScript[subLine-1];
+            outlet.text = patientScript[subLine-1];
             subLine++;
             yield return new WaitForSecondsRealtime(seconds);
-            dialogueDisplay.text = "";
+            outlet.text = "";
         }
     }
 }

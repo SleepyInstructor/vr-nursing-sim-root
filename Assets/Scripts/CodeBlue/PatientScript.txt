@@ -14,3 +14,6 @@
 "I said it was 8."
 
 "Augh! My chest!"
+
+"Room 008?                     Are you calling in a    Code Blue?"
+"Rodger that. Help is on the way."
