@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class AssessObject : MonoBehaviour {
-    public ChangeScreen gameManager;
+    public GameController gc;
 
     private void OnTriggerEnter(Collider other){
-        gameManager.IsTaskComplete(tag);
+        gc.IsTaskComplete(other.tag);
     }
 }
