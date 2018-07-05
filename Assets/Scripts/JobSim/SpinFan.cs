@@ -6,6 +6,6 @@ public class SpinFan : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-        this.transform.Rotate(new Vector3(0, 0, 1f));
+        this.transform.Rotate(new Vector3(0, 0, 5f));
 	}
 }
